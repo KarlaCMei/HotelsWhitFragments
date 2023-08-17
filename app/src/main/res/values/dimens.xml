@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="large_image_140dp">140dp</dimen>
+    <dimen name="dimen_50dp">50dp</dimen>
+    <dimen name="nombre_dimen">16dp</dimen>
+    <dimen name="description_size">20sp</dimen>
+
+    <dimen name="btn_name_size">20sp</dimen>
+    <dimen name="text_size">25sp</dimen>
+
+
+</resources>

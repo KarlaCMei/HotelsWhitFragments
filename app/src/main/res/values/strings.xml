@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">HotelesWithFragments</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Strings para el activity de login -->
+
+    <string name="messageInicio">TRAVEL INK!</string>
+    <string name="textEmail">Email</string>
+    <string name="textPassword">Password</string>
+    <string name="checkBox">Remember Me</string>
+    <string name="messageQuestion">Forgot Password?</string>
+    <string name="buttonLogin">LOGIN</string>
+    <string name="textAccount">don´t have an account? <font color='#00204A'><b>Sing Up</b></font></string>
+    <string name="textSeparator">OR</string>
+
+
+    <string name="buttonCerrarSesion">Cerrar sesion</string>
+
+    <string name="option_share">Compartir</string>
+    <string name="mensaje_ingresar">Porfavor ingrese los datos correctos</string>
+
+
+    <string name="btn_paquete">PAQUETE</string>
+    <string name="btn_hotel">HOTEL</string>
+    <string name="btn_vuelo">VUELO</string>
+
+    <string name="btn_ingresar">Ingresar</string>
+    <string name="text_destino">Nombre del destino</string>
+    <string name="text_num_personas">Numero de personas que viajan</string>
+
+    <string name="search_title_hotel">BUSQUEDA HOTELES</string>
+    <string name="search_title_pakage">BUSQUEDA PAQUETE</string>
+    <string name="search_title_fly">BUSQUEDA VUELO</string>
+    <string name="toolbar_home">HOME</string>
+    <string name="preference_file_key">CustomSharedPreferences</string>
+</resources>
