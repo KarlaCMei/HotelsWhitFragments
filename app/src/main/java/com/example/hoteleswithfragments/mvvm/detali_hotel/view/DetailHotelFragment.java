@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -17,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.hoteleswithfragments.databinding.FragmentDetailHotelBinding;
+import com.example.hoteleswithfragments.mvvm.detali_hotel.viewmodel.DetailHotelViewModel;
+import com.example.hoteleswithfragments.mvvm.login.viewModel.LoginViewModel;
 import com.example.hoteleswithfragments.utils.Constants;
 import com.example.hoteleswithfragments.adapters.Imagen;
 import com.example.hoteleswithfragments.R;
@@ -36,12 +40,11 @@ public class DetailHotelFragment extends Fragment implements OnMapReadyCallback 
     private GoogleMap mMap;
     DemoCollectionPagerAdapter demoCollectionPagerAdapter;
     ViewPager viewPager;
-
     SimpleDateFormat formatHour = new SimpleDateFormat("h:mm a", Locale.getDefault());
     SimpleDateFormat formatDate = new SimpleDateFormat("EEE, MMM d, ''yy", Locale.getDefault());
-    public static final String ARG_OBJECT = "objet";
     private FragmentDetailHotelBinding binding;
     private  String  nameHotel;
+    private DetailHotelViewModel viewModel;
 
     public DetailHotelFragment() {
         // Required empty public constructor
@@ -61,6 +64,7 @@ public class DetailHotelFragment extends Fragment implements OnMapReadyCallback 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail_hotel, container, false);
+        viewModel = new ViewModelProvider(this).get(DetailHotelViewModel.class);
         return binding.getRoot();
     }
 
@@ -70,7 +74,7 @@ public class DetailHotelFragment extends Fragment implements OnMapReadyCallback 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         readExtra();
-
+        observer();
 
        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -78,11 +82,7 @@ public class DetailHotelFragment extends Fragment implements OnMapReadyCallback 
         binding.btnReservar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!Constants.CREATE_DIALOG){
-                    createDialogo();
-                }else{
-                    createDialog();
-                }
+                viewModel.showMsg();
             }
         });
 
@@ -101,7 +101,6 @@ public class DetailHotelFragment extends Fragment implements OnMapReadyCallback 
             viewPager = view.findViewById(R.id.pager);
             viewPager.setAdapter(demoCollectionPagerAdapter);
         }
-
 
     }
 
@@ -148,16 +147,15 @@ public class DetailHotelFragment extends Fragment implements OnMapReadyCallback 
             binding.textViewMostrarFecha.setText(showFecha);
         }
 
-
-
     }
 
 
 
-    public  void createDialog(){
+    public  void createDialog(String msg){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireContext());
-        alertDialog.setMessage("La reserva se ha completado");
+        alertDialog.setMessage(msg);
         alertDialog.setTitle("RESERVAR");
+
         alertDialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -165,19 +163,8 @@ public class DetailHotelFragment extends Fragment implements OnMapReadyCallback 
             }
         });
         alertDialog.create().show();
-    }
-    public  void createDialogo(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireContext());
-        alertDialog.setMessage("La reserva ha fallado");
-        alertDialog.setTitle("RESERVAR");
-        alertDialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        alertDialog.create().show();
-    }
 
+    }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -187,5 +174,16 @@ public class DetailHotelFragment extends Fragment implements OnMapReadyCallback 
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    public void observer(){
+        viewModel.getMsg().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if(Constants.CREATE_DIALOG){
+                    createDialog(s);
+                }
+            }
+        });
     }
 }

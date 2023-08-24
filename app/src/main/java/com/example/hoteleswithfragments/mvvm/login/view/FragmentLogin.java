@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
@@ -36,7 +37,6 @@ public class FragmentLogin extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -51,22 +51,10 @@ public class FragmentLogin extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        observer();
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*if((binding.editTextEmail.getText() == null || binding.editTextEmail.getText().toString().equals("") ||!validarEmail(binding.editTextEmail.getText().toString().trim())) ||
-                        (binding.editTextPassword.getText() == null  ||  binding.editTextPassword.getText().toString().equals("") || binding.editTextPassword.getText().toString().length()<6 ) ){
-                    binding.editTextEmail.setError("Email no valido");
-                    Toast.makeText(requireContext(), getString(R.string.mensaje_ingresar), Toast.LENGTH_LONG).show();
-
-                } else{
-                    CustomSharedPreferences.setSharedBoolean("IS_LOGIN_SHARED_KEY",true);
-                    Intent intent = new Intent(requireActivity(), HomeActivity.class);
-                    startActivity(intent);
-                    requireActivity().finish();
-                }*/
-
                 if ((binding.editTextEmail.getText() == null || binding.editTextEmail.getText().toString().equals("") || !validarEmail(binding.editTextEmail.getText().toString().trim()))) {
                     binding.editTextEmail.setError("Email no valido");
                     Toast.makeText(requireContext(), getString(R.string.mensaje_ingresar), Toast.LENGTH_LONG).show();
@@ -74,12 +62,8 @@ public class FragmentLogin extends Fragment {
                     binding.editTextPassword.setError("La contraseña tiene que ser mayor a 6 digitos");
                     Toast.makeText(requireContext(), getString(R.string.mensaje_ingresar), Toast.LENGTH_LONG).show();
                 } else {
-                    CustomSharedPreferences.setSharedBoolean("IS_LOGIN_SHARED_KEY", true);
-                    Intent intent = new Intent(requireActivity(), HomeActivity.class);
-                    startActivity(intent);
-                    requireActivity().finish();
+                    isLogin();
                 }
-
 
             }
         });
@@ -130,7 +114,6 @@ public class FragmentLogin extends Fragment {
                         binding.editTextEmail.setError("Email no valido");
                     }
                     binding.editTextPassword.setError(null);
-
                 } else {
                     binding.btnLogin.setEnabled(false);
                     binding.editTextPassword.setError("La contraseña tiene que ser mayor a 6 digitos");
@@ -143,8 +126,6 @@ public class FragmentLogin extends Fragment {
 
             }
         });
-
-
     }
 
     private boolean validateEmail(CharSequence text) {
@@ -174,6 +155,27 @@ public class FragmentLogin extends Fragment {
             startActivity(new Intent(requireContext(), HomeActivity.class));
             requireActivity().finish();
         }
+    }
+
+    public void isLogin(){
+        viewModel.isLogin(binding.editTextEmail.getText().toString(), binding.editTextPassword.getText().toString());
+    }
+
+    private void observer(){
+        viewModel.getUser().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                    CustomSharedPreferences.setSharedBoolean("IS_LOGIN_SHARED_KEY", true);
+                    Intent intent = new Intent(requireActivity(), HomeActivity.class);
+                    startActivity(intent);
+                    requireActivity().finish();
+                }else{
+                    Toast.makeText(binding.editTextEmail.getContext(), "Usuario no valido", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
 

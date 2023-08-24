@@ -71,42 +71,6 @@ public class ListaHotelesFragment extends Fragment implements OnClicHotelListene
         adapter = new CustomHotelAdapter(HotelList.getHotels(), this);
         binding.listHotels.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.listHotels.setAdapter(adapter);
-        /*requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.menu_home,menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-
-                switch (menuItem.getItemId()) {
-                    case R.id.share:
-                        //Toast.makeText(this, "Vamonos a : " + nombre, Toast.LENGTH_SHORT).show();
-                        openIntentImplicitoWithParams();
-                        return true;
-
-                    case android.R.id.home:
-                        onBackPressed();
-                        return true;
-                    default:
-                        return ListaHotelesFragment.super.onContextItemSelected(menuItem);
-                }
-                return false;
-           }
-        });*/
-
-        /*View includedLayout = view.findViewById(R.id.toolbar_list_hotel);
-        ImageView insideTheIncludedLayout = (ImageView)includedLayout.findViewById(R.id.ic_share);
-
-        insideTheIncludedLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openIntentImplicitoWithParams();
-
-            }
-        });*/
-
         binding.toolbar.icShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,7 +114,6 @@ public class ListaHotelesFragment extends Fragment implements OnClicHotelListene
         detailActivity.putLong(Constants.TIME,hora );
         detailActivity.putLong(Constants.DATE,fecha );
         detailActivity.putSerializable(Constants.URL_IMG_DETAIL_HOTEL,hotel.getImages());
-        //detailActivity.putString(Constants.URL_IMG, hotel.getUrlImg());
         detailActivity.putString(Constants.URL_IMG, hotel.getUrlImg());
         Navigation.findNavController( view).navigate(R.id.action_listaHotelesFragment_to_detailHotelFragment,detailActivity);
     }
